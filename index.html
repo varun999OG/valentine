@@ -1,1 +1,364 @@
-temp
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine’s Week 💖</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #1a002b, #000);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ---------- WELCOME ---------- */
+#welcome {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.title {
+  font-size: 3rem;
+  color: #ff4fd8;
+  text-shadow: 0 0 25px #ff4fd8;
+}
+
+.btn {
+  margin-top: 25px;
+  padding: 12px 32px;
+  border-radius: 30px;
+  border: 2px solid #00ffe1;
+  background: transparent;
+  color: #00ffe1;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 0 15px #00ffe1;
+}
+
+.btn:hover {
+  background: #00ffe1;
+  color: #000;
+}
+
+#typing {
+  margin-top: 30px;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px #ff4fd8;
+  min-height: 40px;
+}
+
+/* ---------- CARDS ---------- */
+#cards {
+  min-height: 100vh;
+  padding: 80px 20px;
+  display: none;
+  text-align: center;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.card {
+  background: rgba(255,255,255,0.12);
+  border-radius: 18px;
+  padding: 30px 20px;
+  box-shadow: 0 0 25px rgba(255,79,216,0.5);
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+}
+
+.card:hover {
+  transform: scale(1.06);
+}
+
+.card.locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.lock-icon {
+  font-size: 24px;
+}
+
+.unlock-text {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #ffbde9;
+}
+
+/* ---------- MUSIC ---------- */
+.music-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.45);
+  padding: 10px 14px;
+  border-radius: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 0 15px #ff4fd8;
+  z-index: 50;
+}
+
+.music-control button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #ff4fd8;
+}
+
+.music-control input {
+  width: 80px;
+}
+
+/* ---------- SETTINGS ---------- */
+.settings-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 60;
+}
+
+.settings-panel {
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 260px;
+  height: 100%;
+  background: #0b0014;
+  padding: 20px;
+  transition: right 0.35s ease;
+  z-index: 55;
+}
+
+.settings-panel.open {
+  right: 0;
+}
+
+/* ---------- EMOJI RAIN ---------- */
+.emoji {
+  position: fixed;
+  top: -10vh;
+  pointer-events: none;
+  z-index: 1;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to { transform: translateY(120vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music-control">
+  <button onclick="toggleMusic()">🎵</button>
+  <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="setVolume(this.value)">
+</div>
+
+<div class="settings-btn" onclick="toggleSettings()">☰</div>
+
+<div class="settings-panel">
+  <h3>Customize ✨</h3>
+  <p>More themes coming soon 💖</p>
+</div>
+
+<!-- 💖 WELCOME -->
+<section id="welcome">
+  <h1 class="title">Valentine’s Week 💖</h1>
+  <button class="btn" onclick="revealText()">Reveal 💕</button>
+  <p id="typing"></p>
+  <button class="btn" id="enterBtn" style="display:none" onclick="enterSite()">Enter 🌹</button>
+</section>
+
+<!-- 🌹 CARDS -->
+<section id="cards">
+  <h2 style="margin-bottom:30px;">For You 💝</h2>
+
+  <div class="cards-grid">
+    <div class="card locked" data-unlock="2026-02-07" onclick="openDay(this,'rose.html')">
+      <div class="lock-icon">🔒</div> 🌹 Rose Day
+      <span class="unlock-text"></span>
+    </div>
+
+    <div class="card locked" data-unlock="2026-02-08" onclick="openDay(this,'propose.html')">
+      <div class="lock-icon">🔒</div> 💍 Propose Day
+      <span class="unlock-text"></span>
+    </div>
+
+    <div class="card locked" data-unlock="2026-02-09">
+      <div class="lock-icon">🔒</div> 🍫 Chocolate Day
+      <span class="unlock-text"></span>
+    </div>
+
+    <div class="card locked" data-unlock="2026-02-10">
+      <div class="lock-icon">🔒</div> 🧸 Teddy Day
+      <span class="unlock-text"></span>
+    </div>
+
+    <div class="card locked" data-unlock="2026-02-11">
+      <div class="lock-icon">🔒</div> 🤝 Promise Day
+      <span class="unlock-text"></span>
+    </div>
+
+    <div class="card locked" data-unlock="2026-02-12">
+      <div class="lock-icon">🔒</div> 🫂 Hug Day
+      <span class="unlock-text"></span>
+    </div>
+
+    <div class="card locked" data-unlock="2026-02-13">
+      <div class="lock-icon">🔒</div> 💋 Kiss Day
+      <span class="unlock-text"></span>
+    </div>
+
+    <div class="card locked" data-unlock="2026-02-14">
+      <div class="lock-icon">🔒</div> ❤️ Valentine’s Day
+      <span class="unlock-text"></span>
+    </div>
+  </div>
+</section>
+
+<script>
+
+  let lobbyMusicStarted = false;
+
+function startLobbyMusic() {
+  if (!lobbyMusicStarted) {
+    const music = document.getElementById("bgMusic");
+    if (music) {
+      music.volume = 0.5;
+      music.play().catch(() => {});
+      lobbyMusicStarted = true;
+    }
+  }
+}
+
+/* -------- TYPING -------- */
+const message = "Hey Blessy 💖 My Baby, My Panda, My Kawaii Girl… this Valentine’s week is just for us 🥹💕🌹✨";
+let idx = 0;
+
+function revealText() {
+  startLobbyMusic();
+  document.getElementById("typing").innerHTML = "";
+  i = 0;
+  type();
+}
+
+
+function type() {
+  if (idx < message.length) {
+    typing.innerHTML += message.charAt(idx++);
+    setTimeout(type, 60);
+  } else {
+    enterBtn.style.display = "inline-block";
+  }
+}
+
+function enterSite() {
+  startLobbyMusic();
+  welcome.style.display = "none";
+  cards.style.display = "block";
+  location.hash = "cards";
+}
+
+
+/* -------- LOCK LOGIC -------- */
+const today = new Date();
+today.setHours(0,0,0,0);
+
+document.querySelectorAll(".card").forEach(card => {
+  const [y,m,d] = card.dataset.unlock.split("-");
+  const unlock = new Date(y, m-1, d);
+  const text = card.querySelector(".unlock-text");
+  const lock = card.querySelector(".lock-icon");
+
+  if (today >= unlock) {
+    card.classList.remove("locked");
+    lock.textContent = "💖";
+    text.textContent = "Unlocked 💕";
+  } else {
+    text.textContent = "Unlocks on " + unlock.toDateString().slice(4);
+  }
+});
+
+function openDay(card, link) {
+  if (!card.classList.contains("locked")) {
+    window.location.href = link;
+  }
+}
+
+/* -------- MUSIC -------- */
+const music = document.getElementById("bgMusic");
+let playing = false;
+function toggleMusic() {
+  playing ? music.pause() : music.play();
+  playing = !playing;
+}
+function setVolume(v) {
+  music.volume = v;
+}
+
+/* -------- SETTINGS -------- */
+function toggleSettings() {
+  document.querySelector(".settings-panel").classList.toggle("open");
+}
+
+/* -------- EMOJI RAIN -------- */
+function spawnEmoji() {
+  const emojis = ["💖","🌹","✨","💕","💘","🥰"];
+  const e = document.createElement("div");
+  e.className = "emoji";
+  e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  e.style.left = Math.random()*100 + "vw";
+  e.style.fontSize = (30 + Math.random()*40) + "px";
+  e.style.animationDuration = (6 + Math.random()*6) + "s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),12000);
+}
+setInterval(spawnEmoji, 250);
+
+/* -------- BACK BUTTON FIX -------- */
+if (location.hash === "#cards") {
+  welcome.style.display = "none";
+  cards.style.display = "block";
+}
+
+document.body.addEventListener("click", startLobbyMusic, { once: true });
+
+</script>
+
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+</body>
+</html>
