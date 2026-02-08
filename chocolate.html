@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chocolate Day 🍫</title>
+
+<style>
+
+/* 🎶 Music Control */
+.music-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.4);
+  padding: 10px 14px;
+  border-radius: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 0 15px #ff4fd8;
+  z-index: 999;
+}
+
+.music-control button {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #ff4fd8;
+}
+
+.music-control input[type="range"] {
+  width: 80px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  background: url("rose-new-bg.jpeg") no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Dark overlay */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 0;
+}
+
+/* Back Button */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid #ff4fd8;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Card Wrapper */
+.card-wrapper {
+  position: relative;
+  z-index: 2;
+  perspective: 1200px;
+}
+
+/* Card */
+.love-card {
+  width: 540px;
+  height: 740px;
+  transform-style: preserve-3d;
+  transition: transform 1.2s ease;
+  cursor: pointer;
+}
+
+.love-card.open {
+  transform: rotateY(-180deg);
+}
+
+.card-front,
+.card-inside {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  box-shadow: 0 20px 60px rgba(255, 79, 216, 0.5);
+  padding: 28px;
+}
+
+/* Front */
+.card-front {
+  background: linear-gradient(135deg, #6b3e26, #3e1f0f);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.card-front h2 {
+  font-size: 1.9rem;
+}
+
+.card-front p {
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+/* Inside */
+.card-inside {
+  background: #fff7f2;
+  transform: rotateY(180deg);
+  text-align: center;
+  color: #3b1f14;
+  overflow-y: auto;
+}
+
+.card-inside h2 {
+  color: #6b3e26;
+  margin-bottom: 12px;
+}
+
+.card-inside p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.card-inside img,
+.card-inside video {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+/* Hint */
+.hint {
+  position: absolute;
+  bottom: -35px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  z-index: 2;
+}
+</style>
+</head>
+
+<body>
+
+  <!-- 🎵 Background Music -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 🎶 Music Controls -->
+<div class="music-control">
+  <button onclick="toggleMusic()">🎵</button>
+  <input type="range" min="0" max="1" step="0.01" value="0.5"
+         onchange="setVolume(this.value)">
+</div>
+
+
+
+<!-- BACK -->
+<button class="back-btn" onclick="goBack()">← Back</button>
+
+<!-- CARD -->
+<div class="card-wrapper">
+  <div class="love-card" onclick="toggleCard()">
+
+    <!-- FRONT -->
+    <div class="card-front">
+      <h2>For You 🍫💖</h2>
+      <p>Tap to unwrap something sweet 🤎</p>
+    </div>
+
+    <!-- INSIDE -->
+    <div class="card-inside">
+      <h2>🍫💖 Happy Chocolate Day 💖🍫</h2>
+
+      <p>
+        My sweet Blessu 🍫🤎  
+      </p>
+
+      <p>
+        They say chocolates make people happy 😊,  
+        but honestly… you do it better 💕  
+      </p>
+
+      <p>
+        Blessy 💖, my Baby 🥺, my Panda Baby 🐼, my Kawaii Baby 🌸✨ —  
+        you are soft like melted chocolate 🤍,  
+        warm like a hug 💫,  
+        and addictive in the best way possible 😌💘  
+      </p>
+
+      <p>
+        Life with you feels sweeter 🍯,  
+        calmer 🌙,  
+        and full of little moments I want to keep forever 💭✨  
+      </p>
+
+      <p>
+        If I could wrap all my love 🎁💝,  
+        I’d give it to you like this —  
+        rich 🤎, sweet 🍫, and made only for you 💖  
+      </p>
+
+      <p>
+        Happy Chocolate Day, my love 🍫💞  
+        You’re my favorite treat… always 😘✨  
+      </p>
+
+      <!-- IMAGE -->
+      <img src="chocolate.jpg" alt="Chocolate">
+
+      <!-- OPTIONAL VOICE NOTE
+      <audio controls>
+        <source src="chocolate-voice.mp3" type="audio/mpeg">
+      </audio>
+      -->
+    </div>
+
+  </div>
+
+  <div class="hint">Tap again to close 🤎</div>
+</div>
+
+<script>
+/* Back */
+function goBack() {
+  window.location.href = "index.html#cards";
+}
+
+/* Card open */
+function toggleCard() {
+  document.querySelector(".love-card").classList.toggle("open");
+}
+
+/* Chocolate emoji rain */
+function spawnEmoji() {
+  const emojis = ["🍫","🤎","💖","✨","💕"];
+  const e = document.createElement("div");
+  e.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+  e.style.position = "fixed";
+  e.style.left = Math.random()*100 + "vw";
+  e.style.top = "-10vh";
+  e.style.fontSize = (26 + Math.random()*40) + "px";
+  e.style.opacity = Math.random();
+  e.style.zIndex = "1";
+  document.body.appendChild(e);
+
+  e.animate(
+    [{ transform: "translateY(0)" }, { transform: "translateY(110vh)" }],
+    { duration: 9000, easing: "linear" }
+  );
+
+  setTimeout(() => e.remove(), 10000);
+}
+setInterval(spawnEmoji, 380);
+
+/* 🎵 Music Logic */
+let playing = false;
+const music = document.getElementById("bgMusic");
+
+function toggleMusic() {
+  if (!playing) {
+    music.volume = 0.5;
+    music.play();
+  } else {
+    music.pause();
+  }
+  playing = !playing;
+}
+
+function setVolume(val) {
+  music.volume = val;
+}
+
+</script>
+
+</body>
+</html>
