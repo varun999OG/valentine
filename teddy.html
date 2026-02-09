@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teddy Day 🧸</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  height:100vh;
+  background:url("rose-new-bg.jpeg") no-repeat center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.55);
+  z-index:0;
+}
+
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:rgba(0,0,0,0.6);
+  border:1px solid #ff4fd8;
+  color:white;
+  padding:8px 14px;
+  border-radius:20px;
+  cursor:pointer;
+  z-index:10;
+}
+
+.card-wrapper{
+  position:relative;
+  z-index:2;
+  perspective:1200px;
+}
+
+.love-card{
+  width:540px;
+  height:740px;
+  transform-style:preserve-3d;
+  transition:transform 1.2s ease;
+}
+
+.love-card.open{
+  transform:rotateY(-180deg);
+}
+
+.card-front,
+.card-inside{
+  position:absolute;
+  width:100%;
+  height:100%;
+  border-radius:16px;
+  backface-visibility:hidden;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(255,79,216,0.45);
+}
+
+.card-front{
+  background:linear-gradient(135deg,#ff9acb,#ff4fd8);
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+#teddy{
+  font-size:90px;
+  margin:30px 0;
+  cursor:pointer;
+  animation:float 2s infinite ease-in-out;
+}
+
+@keyframes float{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-15px);}
+  100%{transform:translateY(0);}
+}
+
+#counter{
+  margin-top:10px;
+  font-size:1.1rem;
+}
+
+.card-inside{
+  background:#fff8fb;
+  transform:rotateY(180deg);
+  text-align:center;
+  color:#333;
+  overflow-y:auto;
+}
+
+.card-inside h2{
+  color:#ff4fd8;
+  margin-bottom:12px;
+}
+
+.card-inside p{
+  font-size:1.05rem;
+  line-height:1.6;
+  margin-bottom:15px;
+}
+
+.card-inside img{
+  width:100%;
+  border-radius:12px;
+  margin-top:12px;
+}
+
+.hint{
+  position:absolute;
+  bottom:-35px;
+  width:100%;
+  text-align:center;
+  color:white;
+  opacity:0.7;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC CONTROL -->
+<div style="
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:20;
+  background:rgba(0,0,0,0.6);
+  padding:8px 12px;
+  border-radius:20px;
+  color:white;
+  display:flex;
+  align-items:center;
+  gap:8px;
+">
+  <button onclick="toggleMusic()" style="
+    background:none;
+    border:none;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+  ">🎵</button>
+
+  <input type="range" min="0" max="1" step="0.01"
+    value="0.4"
+    onchange="music.volume=this.value">
+</div>
+
+<audio id="cheer" src="cheer.mp3"></audio>
+<audio id="music" src="music.mp3" loop></audio>
+
+<button class="back-btn" onclick="goBack()">← Back</button>
+
+<div class="card-wrapper">
+  <div class="love-card">
+
+    <div class="card-front">
+      <h2>Catch the Teddy 🧸</h2>
+      <p>Tap the teddy 3 times to unlock 💖</p>
+
+      <div id="teddy">🧸</div>
+      <div id="counter">Taps: 0 / 3</div>
+    </div>
+
+    <div class="card-inside">
+      <h2>🧸💖 Happy Teddy Day 💖🧸</h2>
+
+      <p>My Blessu 🤍</p>
+
+      <p>
+        If love had a shape,  
+        it would look like a teddy 🧸 —  
+        soft, warm, comforting… just like you 💕
+      </p>
+
+      <p>
+        Baby 💖, Panda Baby 🐼, Kawaii Baby 🌸  
+        thinking of you makes everything lighter 🌈✨
+      </p>
+
+      <p>
+        Happy Teddy Day, my comfort place 🧸💞
+      </p>
+
+      <img src="teddy.jpg">
+    </div>
+
+  </div>
+  <div class="hint">You unlocked it with love 🤍</div>
+</div>
+
+<script>
+const teddy = document.getElementById("teddy");
+const counter = document.getElementById("counter");
+const card = document.querySelector(".love-card");
+const cheer = document.getElementById("cheer");
+const music = document.getElementById("music");
+
+let taps = 0;
+let gameWon = false;
+let musicPlaying = false;
+
+teddy.addEventListener("click", () => {
+  if(gameWon) return;
+
+  taps++;
+  counter.innerText = `Taps: ${taps} / 3`;
+
+  teddy.style.transform =
+    `translate(${Math.random()*60-30}px, ${Math.random()*40-20}px)`;
+
+  if(taps >= 3){
+    gameWon = true;
+    cheer.play();
+
+    setTimeout(()=>{
+      card.classList.add("open");
+      music.play();
+      musicPlaying = true;
+    }, 2500);
+  }
+});
+
+function toggleMusic(){
+  if(!musicPlaying){
+    music.play();
+    musicPlaying = true;
+  }else{
+    music.pause();
+    musicPlaying = false;
+  }
+}
+
+function goBack(){
+  window.location.href = "index.html#cards";
+}
+
+/* Emoji rain */
+function spawnEmoji(){
+  const emojis = ["🧸","💖","✨","🤍","💕"];
+  const e = document.createElement("div");
+
+  e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+  e.style.position = "fixed";
+  e.style.left = Math.random() * 100 + "vw";
+  e.style.top = "-10vh";
+  e.style.fontSize = (26 + Math.random() * 40) + "px";
+  e.style.opacity = Math.random();
+  e.style.zIndex = "1";
+  e.style.pointerEvents = "none";
+
+  document.body.appendChild(e);
+
+  e.animate(
+    [
+      { transform: "translateY(0)" },
+      { transform: "translateY(110vh)" }
+    ],
+    { duration: 9000, easing: "linear" }
+  );
+
+  setTimeout(() => e.remove(), 10000);
+}
+
+setInterval(spawnEmoji, 380);
+
+</script>
+
+</body>
+</html>
