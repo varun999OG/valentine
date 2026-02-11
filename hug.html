@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hug Day 🤗</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  height:100vh;
+  background:url("rose-new-bg.jpeg") no-repeat center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* Dark overlay */
+body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  z-index:0;
+}
+
+/* Back button */
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:rgba(0,0,0,0.6);
+  border:1px solid #ff4fd8;
+  color:white;
+  padding:8px 14px;
+  border-radius:20px;
+  cursor:pointer;
+  z-index:10;
+}
+
+/* Card wrapper */
+.card-wrapper{
+  position:relative;
+  z-index:2;
+  perspective:1200px;
+}
+
+/* Card */
+.love-card{
+  width:520px;
+  height:720px;
+  transform-style:preserve-3d;
+  transition:transform 1.2s ease;
+}
+
+.love-card.open{
+  transform:rotateY(-180deg);
+}
+
+.card-front,
+.card-inside{
+  position:absolute;
+  width:100%;
+  height:100%;
+  border-radius:16px;
+  backface-visibility:hidden;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(255,79,216,0.5);
+}
+
+/* FRONT */
+.card-front{
+  background:linear-gradient(135deg,#ff7ecb,#ff4fd8);
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.hug-circle{
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  border:4px dashed rgba(255,255,255,0.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
+  margin:30px 0;
+  cursor:pointer;
+  user-select:none;
+}
+
+.progress{
+  width:80%;
+  height:10px;
+  background:rgba(255,255,255,0.3);
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  width:0%;
+  background:white;
+  transition:width 0.2s;
+}
+
+/* INSIDE */
+.card-inside{
+  background:#fff8fb;
+  transform:rotateY(180deg);
+  text-align:center;
+  color:#333;
+  overflow-y:auto;
+}
+
+.card-inside h2{
+  color:#ff4fd8;
+  margin-bottom:12px;
+}
+
+.card-inside p{
+  font-size:1.05rem;
+  line-height:1.6;
+  margin-bottom:15px;
+}
+
+.card-inside img{
+  width:100%;
+  border-radius:12px;
+  margin-top:12px;
+}
+
+/* Hint */
+.hint{
+  position:absolute;
+  bottom:-35px;
+  width:100%;
+  text-align:center;
+  color:white;
+  opacity:0.7;
+}
+</style>
+</head>
+
+<body>
+
+<button class="back-btn" onclick="goBack()">← Back</button>
+
+<!-- AUDIO -->
+<audio id="cheer">
+  <source src="cheer.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- CARD -->
+<div class="card-wrapper">
+  <div class="love-card" id="card">
+
+    <!-- FRONT : GAME -->
+    <div class="card-front">
+      <h2>Hold the Hug 🤗</h2>
+      <p>Press & hold until the hug feels complete 🤍</p>
+
+      <div class="hug-circle" id="hug">💌</div>
+
+      <div class="progress">
+        <span id="bar"></span>
+      </div>
+
+      <p style="margin-top:10px;font-size:0.9rem;">
+        Don’t let go too soon 💞
+      </p>
+    </div>
+
+    <!-- INSIDE : MESSAGE -->
+    <div class="card-inside">
+      <h2>💞💓 Happy Hug Day 💖💗</h2>
+
+      <p>
+        My Blessu 🤍  
+      </p>
+
+      <p>
+        If I could, I’d pull you close right now 🥺  
+        not to say anything…  
+        just to let you feel how safe you are with me 💕  
+      </p>
+
+      <p>
+        Baby 💖, Panda Baby 🐼, Kawaii Baby 🌸  
+        your hugs live in my heart even when you’re not here  
+        soft 🤍, warm 🔥, and healing in ways words never could ✨  
+      </p>
+
+      <p>
+        Every time life feels loud or heavy,  
+        you are the quiet place I want to return to 🌙  
+        the hug I never want to end 💕  
+      </p>
+
+      <p>
+        Happy Hug Day, my comfort,  
+        my calm,  
+        my forever hug 💏 
+      </p>
+
+      <img src="hug.jpg" alt="Hug">
+    </div>
+
+  </div>
+
+  <div class="hint">You unlocked this hug with patience 🤍</div>
+</div>
+
+<script>
+/* Back */
+function goBack(){
+  window.location.href="index.html#cards";
+}
+
+/* Hug Game */
+const hug = document.getElementById("hug");
+const bar = document.getElementById("bar");
+const card = document.getElementById("card");
+const cheer = document.getElementById("cheer");
+const music = document.getElementById("music");
+
+let holding = false;
+let progress = 0;
+let unlocked = false;
+
+hug.addEventListener("mousedown", startHold);
+hug.addEventListener("touchstart", startHold);
+
+document.addEventListener("mouseup", stopHold);
+document.addEventListener("touchend", stopHold);
+
+function startHold(){
+  if(unlocked) return;
+  holding = true;
+}
+
+function stopHold(){
+  holding = false;
+}
+
+setInterval(()=>{
+  if(holding && !unlocked){
+    progress += 1.2;
+    bar.style.width = progress + "%";
+
+    if(progress >= 100){
+      unlocked = true;
+      cheer.play();
+
+      setTimeout(()=>{
+        music.play();
+        card.classList.add("open");
+      },2000);
+    }
+  }
+},30);
+
+/* Emoji rain */
+function spawnEmoji(){
+  const emojis=["🫂","💖","✨","🤍","💕"];
+  const e=document.createElement("div");
+  e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+  e.style.position="fixed";
+  e.style.left=Math.random()*100+"vw";
+  e.style.top="-10vh";
+  e.style.fontSize=(26+Math.random()*40)+"px";
+  e.style.opacity=Math.random();
+  document.body.appendChild(e);
+
+  e.animate(
+    [{transform:"translateY(0)"},{transform:"translateY(110vh)"}],
+    {duration:9000,easing:"linear"}
+  );
+
+  setTimeout(()=>e.remove(),10000);
+}
+setInterval(spawnEmoji,400);
+</script>
+
+</body>
+</html>
