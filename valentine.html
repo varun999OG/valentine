@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Valentine’s Day 💖</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  height:100vh;
+  background:url("rose-new-bg.jpeg") no-repeat center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* Dark overlay */
+body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.55);
+  z-index:0;
+}
+
+/* Music control */
+.music-box{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:10;
+  background:rgba(0,0,0,0.6);
+  padding:8px 14px;
+  border-radius:20px;
+  color:white;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.music-box button{
+  background:none;
+  border:none;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.music-box input{
+  width:80px;
+}
+
+/* Card */
+.card{
+  width:540px;
+  max-height:80vh;
+  background:#fffafc;
+  border-radius:18px;
+  padding:26px;
+  text-align:center;
+  z-index:2;
+  box-shadow:0 25px 70px rgba(255,0,100,0.4);
+  overflow-y:auto;
+}
+
+.card h1{
+  color:#ff2f92;
+  margin-bottom:10px;
+}
+
+.timer{
+  margin:10px 0 20px;
+  font-size:1rem;
+  color:#555;
+}
+
+.card p{
+  font-size:1.05rem;
+  line-height:1.7;
+  margin:16px 0;
+  color:#333;
+}
+
+.card img{
+  width:100%;
+  border-radius:14px;
+  margin:20px 0;
+  box-shadow:0 12px 35px rgba(0,0,0,0.25);
+}
+
+/* Emoji rain */
+.emoji{
+  position:fixed;
+  top:-10vh;
+  z-index:1;
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<div class="music-box">
+  <button onclick="toggleMusic()">🎶</button>
+  <input type="range" min="0" max="1" step="0.01" value="0.4"
+         onchange="music.volume=this.value">
+</div>
+
+<audio id="music" loop>
+  <source src="music1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- CARD -->
+<div class="card">
+  <h1>Happy Valentine’s Day 💖</h1>
+
+  <div class="timer" id="timer">Counting our moment… ⏳</div>
+
+  <p>
+    My love 🤍  
+    I don’t know how to explain what you mean to me,  
+    but I know this — life feels different since you came into it 💕
+  </p>
+
+  <p>
+    You didn’t just become a part of my days,  
+    you became the feeling behind them 🌙✨  
+    The calm in my chaos,  
+    the smile I don’t even realize I’m wearing 💖
+  </p>
+
+  <img src="valentine.jpg" alt="Us 💞">
+
+  <p>
+    With you, even silence feels safe.  
+    Even distance feels softer.  
+    Even the hardest days feel a little easier  
+    because I know you exist in this world 🤍
+  </p>
+
+  <p>
+    I don’t want perfect moments.  
+    I don’t want grand gestures.  
+    I just want *us* —  
+    laughing, talking, existing together 💞
+  </p>
+
+  <p>
+    If love had a place,  
+    it would feel like home.  
+    And somehow…  
+    you feel exactly like that 🏡💗
+  </p>
+
+  <p>
+    Thank you for being you.  
+    Thank you for choosing me.  
+    Thank you for making my heart feel full 💘
+  </p>
+
+  <p>
+    Happy Valentine’s Day,  
+    my heart, my peace, my forever ♾️💖
+  </p>
+</div>
+
+<script>
+/* MUSIC */
+const music = document.getElementById("music");
+let playing = false;
+
+function toggleMusic(){
+  if(!playing){
+    music.play();
+    playing = true;
+  } else {
+    music.pause();
+    playing = false;
+  }
+}
+
+/* TIMER – locked to Valentine’s Day */
+const timer = document.getElementById("timer");
+const target = new Date("2026-02-14T00:00:00");
+
+function updateTimer(){
+  const now = new Date();
+  const diff = target - now;
+
+  if(diff <= 0){
+    timer.innerText = "It’s Valentine’s Day 💖🌹";
+    return;
+  }
+
+  const h = Math.floor(diff / (1000*60*60));
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  timer.innerText = `Starts in ${h}h ${m}m ${s}s 💞`;
+}
+setInterval(updateTimer,1000);
+updateTimer();
+
+/* EMOJI RAIN */
+function dropEmoji(){
+  const emojis = ["💖","💕","🌹","💘","✨"];
+  const e = document.createElement("div");
+  e.className = "emoji";
+  e.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+  e.style.left = Math.random()*100 + "vw";
+  e.style.fontSize = (24 + Math.random()*30) + "px";
+  e.style.animationDuration = (6 + Math.random()*4) + "s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),10000);
+}
+setInterval(dropEmoji,350);
+</script>
+
+</body>
+</html>
